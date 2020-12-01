@@ -1,6 +1,7 @@
 package com.zhangll.example.hivedemo.knowledge;
 
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.ContentSummary;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.FsStatus;
 import org.apache.hadoop.fs.Path;
@@ -28,7 +29,11 @@ public class HadoopFileSystemStatus {
         System.out.println(status);
 
         DistributedFileSystem hdfs = (DistributedFileSystem) fileSystem;
-        // 获取hdfs的节点状态信息
+        // 获取所有系统的信息
+        long capacity = hdfs.getDiskStatus().getCapacity() / 1024 /1024 /1024;
+        long remain = hdfs.getDiskStatus().getRemaining() / 1024 /1024 /1024;
+
+        // 获取hdfs的data节点状态信息
         // 1. capacity 容量信息
         // 2.  NetworkLocation : /default-rack
         DatanodeInfo[] dataNodeStats = hdfs.getDataNodeStats();
@@ -50,5 +55,14 @@ public class HadoopFileSystemStatus {
             assert dataNodeStats[i].getDfsUsed() + dataNodeStats[i].getRemaining() + dataNodeStats[i].getNonDfsUsed() ==  dataNodeStats[i].getCapacity();
         }
 
+
+        //
+        FsStatus status1 = hdfs.getStatus(new Path("/user/hive/warehouse/ods.db/user3"));
+        System.out.println(status1);
+        ContentSummary contentSummary = hdfs.getContentSummary(new Path("/user/hive/warehouse/ods.db/user3"));
+        // 这个是实际的存内容大小
+        long length = contentSummary.getLength();
+        // 这个是块大小，被分配的固定大小，可以往里面不断添加存储内容！！
+        long defaultBlockSize = hdfs.getDefaultBlockSize();
     }
 }
