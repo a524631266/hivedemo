@@ -5,15 +5,21 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.4.0</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <version>2.1.4.RELEASE</version>
+        <!--<relativePath/> &lt;!&ndash; lookup parent from repository &ndash;&gt;-->
     </parent>
     <groupId>com.zhangll.example</groupId>
     <artifactId>hivedemo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>hivedemo</name>
     <description>Demo project for Spring Boot</description>
-
+    <repositories>
+        <repository>
+            <id>cloudera</id>
+            <name>cloudera</name>
+            <url>https://repository.cloudera.com/libs-release-local</url>
+        </repository>
+    </repositories>
     <properties>
         <java.version>1.8</java.version>
     </properties>
@@ -25,10 +31,57 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-hadoop</artifactId>
+            <version>2.5.0.RELEASE</version>
+        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.springframework.data</groupId>-->
+            <!--<artifactId>spring-data-hadoop-core</artifactId>-->
+            <!--&lt;!&ndash;<version>2.0.2.RELEASE</version>&ndash;&gt;-->
+        <!--</dependency>-->
+
+
+        <!--&lt;!&ndash;jdbc jdbc template&ndash;&gt;-->
+        <!--<dependency>-->
+            <!--<groupId>org.springframework.boot</groupId>-->
+            <!--<artifactId>spring-boot-starter-jdbc</artifactId>-->
+            <!--&lt;!&ndash;<exclusions>&ndash;&gt;-->
+                <!--&lt;!&ndash;<exclusion>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<artifactId>HikariCP</artifactId>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<groupId>com.zaxxer</groupId>&ndash;&gt;-->
+                <!--&lt;!&ndash;</exclusion>&ndash;&gt;-->
+            <!--&lt;!&ndash;</exclusions>&ndash;&gt;-->
+        <!--</dependency>-->
+        <!-- hive 执行 exe环境  -->
+        <dependency>
+            <groupId>org.apache.hive</groupId>
+            <artifactId>hive-exec</artifactId>
+            <version>1.1.0-cdh5.9.0</version>
+        </dependency>
+        <!-- hive 驱动包  -->
+        <dependency>
+            <groupId>org.apache.hive</groupId>
+            <artifactId>hive-jdbc</artifactId>
+            <version>1.1.0-cdh5.9.0</version>
+        </dependency>
+
+
+        <!--c3p0链接池-->
+        <dependency>
+            <groupId>c3p0</groupId>
+            <artifactId>c3p0</artifactId>
+            <version>0.9.1.2</version>
+        </dependency>
+
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+
     </dependencies>
 
     <build>
