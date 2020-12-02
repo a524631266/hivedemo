@@ -34,9 +34,33 @@ public class HadoopFileSystemStatus {
         long capacity = hdfs.getDiskStatus().getCapacity() / 1024 /1024 /1024;
         long remain = hdfs.getDiskStatus().getRemaining() / 1024 /1024 /1024;
 
-        // 获取hdfs的data节点状态信息
-        // 1. capacity 容量信息
-        // 2.  NetworkLocation : /default-rack
+
+        getDataNodeStatus(hdfs);
+
+
+        //
+        FsStatus status1 = hdfs.getStatus(new Path("/user/hive/warehouse/ods.db/user3"));
+        System.out.println(status1);
+        ContentSummary contentSummary = hdfs.getContentSummary(new Path("/user/hive/warehouse/ods.db/user3"));
+        // 这个是实际的存内容大小
+        long length = contentSummary.getLength();
+        // 这个是块大小，被分配的固定大小，可以往里面不断添加存储内容！！
+        long defaultBlockSize = hdfs.getDefaultBlockSize();
+
+
+        // 获取fileStatus
+        getFileStatus(fileSystem);
+
+    }
+
+    /**
+     * // 获取hdfs的data节点状态信息
+     *        1. capacity 容量信息
+     *        2.  NetworkLocation : /default-rack
+     * @param hdfs
+     * @throws IOException
+     */
+    private static void getDataNodeStatus(DistributedFileSystem hdfs) throws IOException {
         DatanodeInfo[] dataNodeStats = hdfs.getDataNodeStats();
         for (int i = 0; i < dataNodeStats.length; i++) {
             // 7446 * 1024 * 1024 * 1024(7T数据)
@@ -55,21 +79,6 @@ public class HadoopFileSystemStatus {
             // 7994847763666
             assert dataNodeStats[i].getDfsUsed() + dataNodeStats[i].getRemaining() + dataNodeStats[i].getNonDfsUsed() ==  dataNodeStats[i].getCapacity();
         }
-
-
-        //
-        FsStatus status1 = hdfs.getStatus(new Path("/user/hive/warehouse/ods.db/user3"));
-        System.out.println(status1);
-        ContentSummary contentSummary = hdfs.getContentSummary(new Path("/user/hive/warehouse/ods.db/user3"));
-        // 这个是实际的存内容大小
-        long length = contentSummary.getLength();
-        // 这个是块大小，被分配的固定大小，可以往里面不断添加存储内容！！
-        long defaultBlockSize = hdfs.getDefaultBlockSize();
-
-
-        // 获取fileStatus
-        getFileStatus(fileSystem);
-
     }
 
     private static void getFileStatus(FileSystem fileSystem) throws IOException {
