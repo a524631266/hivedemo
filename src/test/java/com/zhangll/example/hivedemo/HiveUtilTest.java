@@ -120,6 +120,19 @@ public class HiveUtilTest {
         System.out.println("同步查询");
     }
 
+    /**
+     * hive 聚合查询时很慢的，因此会启动一个大的任务进行批查询，所以
+     * 数据统计是要使用hive作为一个批工具来实现聚合的。
+     * select max(reg_date) from user3 group by mobile having mobile = 123456789;
+     *
+     * 在hive中，聚合会根据
+     */
+    @Test
+    public void testQueryMore2(){
+//        String execute = hiveTemplate.query("select sum() from user3");
+    }
+
+
 
     @Test
     public void testInsertIntoHive(){
